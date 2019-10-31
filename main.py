@@ -27,6 +27,24 @@ class Users(Resource):
 
         return res
 
+@api.route('/user/<id>')
+@api.doc(params={'id': 'ID de l\'utilisateur'})
+class User(Resource):
+    def get(self, id):
+        mycursor.execute("SELECT * FROM users WHERE id = " + str(int(id)))
+        myresult = mycursor.fetchall()
+
+        if len(myresult) > 0:
+            res = {
+                "id": str(myresult[0][0]),
+                "nom": str(myresult[0][1]),
+                "prenom": str(myresult[0][2]),
+                "age": str(myresult[0][3])
+            }
+            return res
+        else:
+            api.abort(404)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
