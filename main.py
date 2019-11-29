@@ -110,8 +110,10 @@ class User(Resource):
         else:
             api.abort(404)
 
-def verify_password(self, password, pwd):
+
+def verify_password(password, pwd):
     return pwd_context.verify(password, pwd)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
