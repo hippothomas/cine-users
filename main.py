@@ -65,8 +65,8 @@ class Users(Resource):
         return res
 
     def post(self):
-        nom = request.json['last-name']
-        prenom = request.json['first-name']
+        nom = request.json['lastName']
+        prenom = request.json['firstName']
         login = request.json['login']
         pwd = pwd_context.hash(request.json['password'])
         age = request.json['age']

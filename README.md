@@ -16,8 +16,8 @@ Il peux être nécéssaire en fonction de votre version de python, en cas d'erre
 Paramètres:
 ```
 {
-    "last-name": "nom",
-    "first-name": "prenom",
+    "lastName": "nom",
+    "firstName": "prenom",
     "login": "utilisateur",
     "password": "motdepasse",
     "age": "age"
