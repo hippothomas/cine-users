@@ -4,7 +4,7 @@ Microservice de gestion d'utilisateurs - Réalisé pour un projet en cours
 ## Installation
 Pour le bon fonctionnement du programme, il vous faut installer :<br>
 ```
-pip install mysql-connector flask flask_restplus requests passlib jwt
+pip install mysql-connector flask flask_restplus requests passlib pyjwt
 ```
 Il faut ensuite importer le script SQL dans votre base de donnée puis changer les informations de connections présentes dans le main.py si besoin.<br>
 
