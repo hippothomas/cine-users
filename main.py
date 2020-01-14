@@ -18,13 +18,14 @@ api = Api(app,
           title="Cine-users",
           description="API d'authentification, et de récupération des utilisateurs"
          )
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 login_ns = api.namespace('login', description='Opération d\'authentification et vérification de token')
 user_ns = api.namespace('user', description='Actions sur les utilisateurs')
 
 secret = 'U<CAPeR{*\(M_a"au>`]vYQ!Xi_bbdkJ3j9wX.O$-!{f*kBhT1@xe/D2}U#:3X+'
 
-@login_ns.route('/')
+@login_ns.route('')
 class Login(Resource):
     @login_ns.doc('Login()')
     def get(self):
@@ -63,7 +64,7 @@ class Login(Resource):
         else:
             api.abort(401)
 
-@user_ns.route('s/')
+@user_ns.route('s')
 class Users(Resource):
     def get(self):
         ''' Retourne tous les utilisateurs '''
