@@ -13,12 +13,22 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 app = Flask(__name__)
-api = Api(app)
+api = Api(app,
+          version="1.0.0",
+          title="Cine-users",
+          description="API d'authentification, et de récupération des utilisateurs"
+         )
+
+login_ns = api.namespace('login', description='Opération d\'authentification et vérification de token')
+user_ns = api.namespace('user', description='Actions sur les utilisateurs')
+
 secret = 'U<CAPeR{*\(M_a"au>`]vYQ!Xi_bbdkJ3j9wX.O$-!{f*kBhT1@xe/D2}U#:3X+'
 
-@api.route('/login')
+@login_ns.route('/')
 class Login(Resource):
+    @login_ns.doc('Login()')
     def get(self):
+        ''' Retourne le token de login '''
         if hasattr(request, 'authorization'):
             header = request.headers.get('Authorization')
             header = header.replace("Bearer ", "")
@@ -37,7 +47,10 @@ class Login(Resource):
         else:
             api.abort(401)
 
+    @login_ns.param('user', description='Nom de l\'utilisateur', type="string")
+    @login_ns.param('pwd', description='Password de l\'utilisateur', type="string")
     def post(self):
+        ''' Récupération du token de login '''
         user = request.json['user']
         pwd = request.json['password']
 
@@ -50,9 +63,10 @@ class Login(Resource):
         else:
             api.abort(401)
 
-@api.route('/users')
+@user_ns.route('s/')
 class Users(Resource):
     def get(self):
+        ''' Retourne tous les utilisateurs '''
         mycursor.execute("SELECT * FROM users")
         myresult = mycursor.fetchall()
 
@@ -64,7 +78,13 @@ class Users(Resource):
 
         return res
 
+    @user_ns.param('nom', description='Nom de l\'utilisateur', type="string")
+    @user_ns.param('prenom', description='Prénom de l\'utilisateur', type="string")
+    @user_ns.param('login', description='Login de l\'utilisateur', type="string")
+    @user_ns.param('pwd', description='Password de l\'utilisateur', type="string")
+    @user_ns.param('age', description='Age de l\'utilisateur', type="int")
     def post(self):
+        ''' Ajouter un utilisateur '''
         nom = request.json['lastName']
         prenom = request.json['firstName']
         login = request.json['login']
@@ -92,10 +112,11 @@ class Users(Resource):
             api.abort(400)
 
 
-@api.route('/user/<id>')
-@api.doc(params={'id': 'ID de l\'utilisateur'})
+@user_ns.route('/<id>')
 class User(Resource):
+    @user_ns.param('id', description='ID de l\'utilisateur', type="string")
     def get(self, id):
+        ''' Retourne tous les utilisateurs '''
         mycursor.execute("SELECT * FROM users WHERE id = " + str(int(id)))
         myresult = mycursor.fetchall()
 
